@@ -6,51 +6,37 @@ import Card from "react-bootstrap/Card";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Masonry from "react-masonry-css";
+import Select from 'react-select'
 
 function HomePage() {
   const [recipeList, setRecipeList] = useState(null);
   const [protein, setProtein] = useState("");
   const [calories, setCalories] = useState("");
   const { REACT_APP_API_SERVER_URL } = process.env;
-
   useEffect(() => {
     getRecipeList();
   }, []);
 
   useEffect(() => {
-    if (protein.length > 0 || calories.length>0) {
-      pathBuilder()
+    if (protein.length > 0 || calories.length > 0) {
+     let path = pathBuilder()
+     getSortedRecipeList(path)
     }else{
       getRecipeList();
     }
     
   }, [protein,calories]);
 
-  function setPathVariables(e) {
-    let {value,name} = e.target;
-    if(value==="" && name==="protein"){
-      setProtein("")
-    }
-    else if(value==="" && name==="calories"){
-      setCalories("")
-    }else if(name==="protein"){
-      let path = `${name}/${value}`;
-      setProtein(path)
-    }else{
-      let path = `${name}/${value}`;
-      setCalories(path)
-    }
-  }
-
   function pathBuilder() {
     let path = `${protein}/${calories}`
+    if(path.charAt(0)==="/"){
+      path = path.slice(1)
+    }
     console.log(path)
     return path
   }
 
-  async function TODO() {
-    const { data } = await axios.get(`${REACT_APP_API_SERVER_URL}/recipes`);
-  }
+  
 
   async function getRecipeList() {
     console.log("called")
@@ -58,31 +44,48 @@ function HomePage() {
     setRecipeList(data);
   }
 
+  async function getSortedRecipeList(path){
+    const { data } = await axios.get(`${REACT_APP_API_SERVER_URL}/recipes/${path}`);
+    console.log(data)
+    setRecipeList(data);
+  }
+
+  const proteinSelect = [
+    { value: '10', label: 'Protein over 10gm' },
+    { value: '20', label: 'Protein over 20gm' },
+    { value: '30', label: 'Protein over 30gm' }
+  ]
+  const caloriesSelect = [
+    { value: '200', label: 'Calories over 200' },
+    { value: '300', label: 'Calories over 300' },
+    { value: '400', label: 'Calories over 400' }
+  ]
+
+
+  function handleProteinSelect(option){
+    if(option===null){
+      setProtein("")
+    }else{
+      let path = `protein/${option.value}`;
+      setProtein(path)
+    }
+  }
+
+  function handleCaloriesSelect(option){
+    if(option===null){
+      setCalories("")
+    }else{
+      let path = `calories/${option.value}`;
+      setCalories(path)
+    }
+  }
+
   return (
     <Container>
       <Row className="justify-content-center">
         <Col className="col-sm-3">
-          <select
-            class="form-select form-select-lg mb-3"
-            aria-label=".form-select-lg example"
-            onChange={setPathVariables} name="protein"
-          >
-            <option value="">Any</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-
-          <select
-            class="form-select form-select-lg mb-3"
-            aria-label=".form-select-lg example"
-            onChange={setPathVariables} name="calories"
-          >
-            <option value="">Any</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
+          <Select options={proteinSelect} onChange={handleProteinSelect} defaultValue="" isClearable="true" placeholder="Protein"/> 
+          <Select options={caloriesSelect} onChange={handleCaloriesSelect} defaultValue="" isClearable="true" placeholder="Calories"/> 
         </Col>
       </Row>
       <Row className="justify-content-stretch">
