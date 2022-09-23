@@ -12,7 +12,7 @@ import Spinner from 'react-bootstrap/Spinner';
 
 
 
-function TestPage() {
+function HomePage() {
   const { REACT_APP_API_SERVER_URL } = process.env;
   const [recipeList, setPath] = useGetRecipeListByPath(`${REACT_APP_API_SERVER_URL}/recipes`);
   const [protein, setProtein] = useState("");
