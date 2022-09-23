@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage/HomePage'
 import { Navbar } from 'react-bootstrap';
 import SiteHeader from './components/SiteHeader/SiteHeader';
 import RecipePage from './pages/RecipePage/RecipePage';
+import TestPage from './pages/Testpage/TestPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/:id" element={<RecipePage/>}></Route>
+        <Route path="/test" element={<TestPage/>}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -36,8 +36,6 @@ function HomePage() {
     return path
   }
 
-  
-
   async function getRecipeList() {
     console.log("called")
     const { data } = await axios.get(`${REACT_APP_API_SERVER_URL}/recipes`);
