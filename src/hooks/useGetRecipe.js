@@ -5,7 +5,7 @@ function useGetRecipe(recipeId) {
 
   const { REACT_APP_API_SERVER_URL } = process.env;
 
-  const [recipe,setRecipe] = useState(recipeId)
+  const [recipe,setRecipe] = useState(null)
 
   useEffect(()=>{
     async function getRecipe(){

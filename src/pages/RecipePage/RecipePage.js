@@ -1,11 +1,12 @@
-import { Col, Container, Row, Image } from "react-bootstrap";
+import { Col, Container, Row, } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import RecipeDetails from "../../components/RecipeDetails/RecipeDetails";
 import useGetRecipe from "../../hooks/useGetRecipe";
 
 function RecipePage() {
   const params = useParams();
   const recipe = useGetRecipe(params.id);
-
+  
   if (!recipe) {
     return(
       <Container>
@@ -17,28 +18,7 @@ function RecipePage() {
       </Container>)
   } else {
     return (
-      <Container>
-        <Row>
-          <Col>
-            <h1>{recipe.title}</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Image></Image>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <h2></h2>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <h2></h2>
-          </Col>
-        </Row>
-      </Container>
+      <RecipeDetails recipe={recipe}></RecipeDetails>
     );
   }
 }

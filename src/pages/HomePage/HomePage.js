@@ -1,14 +1,11 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
 import { useEffect, useState } from "react";
-import Masonry from "react-masonry-css";
 import Select from "react-select";
-import { Link } from "react-router-dom";
 import useGetRecipeListByPath from "../../hooks/useGetRecipeListByPath";
 import Spinner from 'react-bootstrap/Spinner';
+import MasonryGrid from "../../components/MasonryGrid/MasonryGrid";
 
 
 
@@ -66,12 +63,7 @@ function HomePage() {
       setCalories(path);
     }
   }
-  const breakpointColumnsObj = {
-    default: 4,
-    1100: 3,
-    700: 2,
-    500: 1,
-  };
+ 
   if (!recipeList) {
     return (
       <Spinner animation="border" role="status">
@@ -81,8 +73,13 @@ function HomePage() {
   } else {
     return (
       <Container>
-        <Row className="justify-content-center">
-          <Col className="col-sm-3">
+        <Row>
+          <Col>
+            
+          </Col>
+        </Row>
+        <Row className="justify-content-center mb-5">
+          <Col sm={3}>
             <Select
               options={proteinSelect}
               onChange={handleProteinSelect}
@@ -90,39 +87,19 @@ function HomePage() {
               isClearable="true"
               placeholder="Protein"
             />
+          </Col>
+          <Col sm={3}>
             <Select
-              options={caloriesSelect}
-              onChange={handleCaloriesSelect}
-              defaultValue=""
-              isClearable="true"
-              placeholder="Calories"
-            />
+                options={caloriesSelect}
+                onChange={handleCaloriesSelect}
+                defaultValue=""
+                isClearable="true"
+                placeholder="Calories"
+              />
           </Col>
         </Row>
-
-        <Masonry
-          breakpointCols={breakpointColumnsObj}
-          className="my-masonry-grid"
-          columnClassName="my-masonry-grid_column px-2"
-        >
-          {recipeList.map((e) => {
-            return (
-              <Card className="mb-3" key={`${e.id}`}>
-                <Card.Img
-                  variant="top"
-                  src={`${REACT_APP_API_SERVER_URL}/images/${e.image}`}
-                />
-                <Card.Body>
-                  <Card.Title>{e.title}</Card.Title>
-                  <Card.Text>{`${e.intro}`}</Card.Text>
-                  <Button as={Link} to={`${e.id}`} variant="primary">
-                    View Details
-                  </Button>
-                </Card.Body>
-              </Card>
-            );
-          })}
-        </Masonry>
+        <MasonryGrid recipeList={recipeList}></MasonryGrid>
+       
       </Container>
     );
   }
