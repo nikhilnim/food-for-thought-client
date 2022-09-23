@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Masonry from "react-masonry-css";
 import Select from 'react-select'
-
+import { Link } from "react-router-dom";
 function HomePage() {
   const [recipeList, setRecipeList] = useState(null);
   const [protein, setProtein] = useState("");
@@ -56,9 +56,9 @@ function HomePage() {
     { value: '30', label: 'Protein over 30gm' }
   ]
   const caloriesSelect = [
-    { value: '200', label: 'Calories over 200' },
-    { value: '300', label: 'Calories over 300' },
-    { value: '400', label: 'Calories over 400' }
+    { value: '200', label: 'Calories under 200' },
+    { value: '300', label: 'Calories under 300' },
+    { value: '400', label: 'Calories under 400' }
   ]
 
 
@@ -79,7 +79,12 @@ function HomePage() {
       setCalories(path)
     }
   }
-
+  const breakpointColumnsObj = {
+    default: 4,
+    1100: 3,
+    700: 2,
+    500: 1
+  };
   return (
     <Container>
       <Row className="justify-content-center">
@@ -88,9 +93,9 @@ function HomePage() {
           <Select options={caloriesSelect} onChange={handleCaloriesSelect} defaultValue="" isClearable="true" placeholder="Calories"/> 
         </Col>
       </Row>
-      <Row className="justify-content-stretch">
+      
         <Masonry
-          breakpointCols={3}
+          breakpointCols={breakpointColumnsObj}
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column px-2"
         >
@@ -106,14 +111,14 @@ function HomePage() {
                     <Card.Body>
                       <Card.Title>{e.title}</Card.Title>
                       <Card.Text>{`${e.intro}`}</Card.Text>
-                      <Button variant="primary">View Details</Button>
+                      <Button as={Link} to={`${e.id}`} variant="primary">View Details</Button>
                     </Card.Body>
                   </Card>
                 </>
               );
             })}
         </Masonry>
-      </Row>
+
     </Container>
   );
 }
