@@ -17,9 +17,7 @@ function useGetRecipeListByPath(initialPath) {
     }
     getRecipeList()
   },[path])
-
   
-
   return [recipeList,setPath]
 }
 
