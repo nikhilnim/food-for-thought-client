@@ -78,7 +78,7 @@ function HomePage() {
             
           </Col>
         </Row>
-        <Row className="justify-content-center mb-5">
+        <Row className="justify-content-center my-5">
           <Col sm={3}>
             <Select
               options={proteinSelect}
