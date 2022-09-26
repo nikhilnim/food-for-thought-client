@@ -2,7 +2,6 @@ import { Container, Row, Col, Image } from "react-bootstrap";
 import './RecipeDetails.scss'
 const { REACT_APP_API_SERVER_URL } = process.env;
 function RecipeDetails({ recipe }) {
-  console.log(recipe);
   return (
     <Container>
       <Row className="justify-content-center mb-3">

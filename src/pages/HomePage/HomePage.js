@@ -1,12 +1,12 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Select from "react-select";
 import useGetRecipeListByPath from "../../hooks/useGetRecipeListByPath";
 import Spinner from 'react-bootstrap/Spinner';
 import MasonryGrid from "../../components/MasonryGrid/MasonryGrid";
-
+import {UserContext} from '../../context/UserContext'
 
 
 function HomePage() {
@@ -14,8 +14,8 @@ function HomePage() {
   const [recipeList, setPath] = useGetRecipeListByPath(`${REACT_APP_API_SERVER_URL}/recipes`);
   const [protein, setProtein] = useState("");
   const [calories, setCalories] = useState("");
-  
-
+  const [user, setUser] = useContext(UserContext);
+  console.log(user)
   useEffect(() => {
     function pathBuilder() {
       let path = `${protein}/${calories}`;
