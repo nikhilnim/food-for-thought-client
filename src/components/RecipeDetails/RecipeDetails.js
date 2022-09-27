@@ -38,9 +38,6 @@ function RecipeDetails({ recipe }) {
   }
 
   useEffect(() => {
-    //  setIsFav(user.favRecipes.some((e)=>{
-    //     return e.recipeId = recipe.id
-    //   }))
     if (user) {
       let temp = user.favRecipes.some((e) => {
         console.log("fav recipe", e);
