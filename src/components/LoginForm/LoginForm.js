@@ -1,8 +1,6 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 const {REACT_APP_API_SERVER_URL} = process.env;
 function LoginForm() {
@@ -13,14 +11,11 @@ function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  console.log(errors)
   const navigate = useNavigate()
 
   async function onSubmit(formData){
-    console.log(formData)
     try{
       const {data} = await axios.post(`${REACT_APP_API_SERVER_URL}/users/login`,formData)
-      console.log(data)
       sessionStorage.setItem("token",data.token)
       setIsLoginError(false)
       setErrorMessage("")
@@ -58,8 +53,8 @@ function LoginForm() {
                 {...register('password',{required:true})}
               />
               {errors.password &&<p className="text-danger fs-6 fw-lighter">Please enter password</p>}
-              <button type="sumbit" class="btn btn-primary mt-3" >Login</button>
-              <button type="button" onClick={()=>navigate("/signup")} class="btn btn-primary mt-3" >Sign Up</button>
+              <button type="sumbit" class="btn btn-primary mt-3 me-3" >Login</button>
+              <button type="button" onClick={()=>navigate("/signup")} class="btn btn-primary mt-3 " >Sign Up</button>
             </div>
             {isLoginError && <p className="text-danger fs-6 fw-lighter">{`${errorMessage}`}</p>}
           </form>

@@ -14,8 +14,7 @@ function HomePage() {
   const [recipeList, setPath] = useGetRecipeListByPath(`${REACT_APP_API_SERVER_URL}/recipes`);
   const [protein, setProtein] = useState("");
   const [calories, setCalories] = useState("");
-  const [user, setUser] = useContext(UserContext);
-  console.log(user)
+
   useEffect(() => {
     function pathBuilder() {
       let path = `${protein}/${calories}`;

@@ -11,13 +11,6 @@ function Profile() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [userRecipeList, setUserRecipeList] = useState(null)
-  // function getFavRecipes(){
-  //   let promises = user.favRecipes.map((recipe)=>{
-  //     return axios.get(`${REACT_APP_API_SERVER_URL}/recipes/${recipe.id}`)
-  //   })
-  //   console.log(promises)
-  // }
-
   async function getProfile(token) {
     try {
       const { data } = await axios.get(
@@ -28,7 +21,6 @@ function Profile() {
           },
         }
       );
-      console.log(data);
       setIsLoading(false);
       setUser(data);
     } catch (err) {
@@ -50,7 +42,7 @@ function Profile() {
   }, []);
 
   useEffect(() => {
-    if (user && !user.favRecipes.length) {
+    if (user && user.favRecipes.length) {
         let promises = user.favRecipes.map((recipe) => {
           return axios.get(`${REACT_APP_API_SERVER_URL}/recipes/${recipe.recipeId}`);
         });
@@ -62,7 +54,6 @@ function Profile() {
           const recipeList = data.map((e)=>{
             return e.data
           })
-          console.log(recipeList)
           setUserRecipeList(recipeList)
         }catch(err){
           console.log(err)
@@ -96,9 +87,9 @@ function Profile() {
       <div className="row">
         <div className="col-sm-6">
           {userRecipeList && <Accordion defaultActiveKey="0">
-            {userRecipeList.map((recipe) => {
+            {userRecipeList.map((recipe,idx) => {
               return (
-                <Accordion.Item eventKey="0">
+                <Accordion.Item eventKey={`${idx}`}>
                   <Accordion.Header>{`${recipe.title}`}</Accordion.Header>
                   <Accordion.Body>{`${recipe.ingredient}`}</Accordion.Body>
                 </Accordion.Item>

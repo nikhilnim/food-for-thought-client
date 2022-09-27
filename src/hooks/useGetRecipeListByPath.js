@@ -9,7 +9,6 @@ function useGetRecipeListByPath(initialPath) {
     async function getRecipeList(){
       try{
         const {data} = await axios.get(`${path}`)
-        console.log(data)
         setRecipeList(data)
       }catch(err){
         console.log(err)

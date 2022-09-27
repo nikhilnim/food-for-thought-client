@@ -52,29 +52,7 @@ function LoginPage() {
    
     // Here send a POST request to loginUrl with username and password data
   };
-
-  const renderSignUp = () => (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSignup}>
-        <div className="form-group">
-          Username: <input type="text" name="username" />
-        </div>
-        <div className="form-group">
-          Name: <input type="text" name="name" />
-        </div>
-        <div className="form-group">
-          Password: <input type="password" name="password" />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Signup
-        </button>
-      </form>
-    </div>
-  );
-
  
-
   // Handle the Signup/Login
   // if (!isSignedUp) return renderSignUp();
   if (!user) return <LoginForm></LoginForm>;

@@ -1,7 +1,55 @@
-import { Container, Row, Col, Image } from "react-bootstrap";
-import './RecipeDetails.scss'
+import { Container, Row, Col, Image, Button } from "react-bootstrap";
+import "./RecipeDetails.scss";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/UserContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const { REACT_APP_API_SERVER_URL } = process.env;
+
 function RecipeDetails({ recipe }) {
+  const [user] = useContext(UserContext);
+  const [isFav, setIsFav] = useState(false);
+  const navigate = useNavigate()
+  console.log(user);
+
+  async function addToUserFav() {
+    console.log("hi");
+    const token = sessionStorage.getItem("token");
+    const payload = {
+      userId: user.id,
+      recipeId: recipe.id,
+    };
+    try {
+      const { data } = await axios.post(
+        `${REACT_APP_API_SERVER_URL}/users/favrecipe`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(data);
+      console.log("hi");
+      setIsFav(true);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    //  setIsFav(user.favRecipes.some((e)=>{
+    //     return e.recipeId = recipe.id
+    //   }))
+    if (user) {
+      let temp = user.favRecipes.some((e) => {
+        console.log("fav recipe", e);
+        return e.recipeId === recipe.id;
+      });
+      setIsFav(temp);
+    }
+  }, []);
+
   return (
     <Container>
       <Row className="justify-content-center mb-3">
@@ -48,6 +96,19 @@ function RecipeDetails({ recipe }) {
           </ul>
         </Col>
       </Row>
+      <p>{`${isFav}`}</p>
+      <Row className="mb-3">
+      {user && <Col>
+          {user && isFav ? <Button onClick={addToUserFav} disabled>Remove fav</Button> :
+            <Button onClick={addToUserFav}>Add to fav</Button>
+          }
+        </Col>} 
+      </Row>
+      {!user &&  <Row>
+        <Col>
+          <Button onClick={()=>navigate('/login')}>Login to fav</Button>
+        </Col>
+      </Row>}
       <Row className="mb-3">
         <Col>
           <h2 className="fs-4 border-bottom lh-lg mb-3">Ingredients</h2>
