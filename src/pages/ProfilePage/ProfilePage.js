@@ -52,7 +52,6 @@ function Profile() {
           const recipeList = data.map((e) => {
             return e.data;
           });
-          console.log(recipeList);
           setUserRecipeList(recipeList);
         } catch (err) {
           console.log(err);
@@ -109,7 +108,7 @@ function Profile() {
                             Cal {recipe.nutrition.calories}
                           </span>
                           <span className="badge bg-danger rounded-pill me-2">
-                            Fat {recipe.nutrition.calories}
+                            Fat {recipe.nutrition.fat}
                           </span>
                           <span className="badge bg-success rounded-pill">
                             Protein {recipe.nutrition.protein}
