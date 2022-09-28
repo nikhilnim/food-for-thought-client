@@ -1,9 +1,13 @@
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
+import { useContext, useState } from "react";
+import { UserContext } from "../../context/UserContext";
+
 const {REACT_APP_API_SERVER_URL} = process.env;
+
 function LoginForm() {
+  const [setUser] = useContext(UserContext);
   const [isLoginError,setIsLoginError] = useState(false)
   const [errorMessage,setErrorMessage] = useState("")
   const {
@@ -12,14 +16,42 @@ function LoginForm() {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate()
+  const location = useLocation()
+
+  // async function onSubmit(formData){
+  //   try{
+  //     const {data} = await axios.post(`${REACT_APP_API_SERVER_URL}/users/login`,formData)
+  //     console.log(data)
+  //     sessionStorage.setItem("token",data.token)
+  //     setIsLoginError(false)
+  //     setErrorMessage("")
+  //     navigate("/profile")
+  //   }catch(err){
+  //     setIsLoginError(true)
+  //     setErrorMessage("user name or password wrong")
+  //     console.log(err)
+  //   }
+  // }
 
   async function onSubmit(formData){
     try{
       const {data} = await axios.post(`${REACT_APP_API_SERVER_URL}/users/login`,formData)
       sessionStorage.setItem("token",data.token)
+      const {data:profile} = await axios.get(`${REACT_APP_API_SERVER_URL}/users/profile`,{
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      setUser(profile)
+      console.log("profile",profile)
       setIsLoginError(false)
       setErrorMessage("")
-      navigate("/profile")
+      if(location.state){
+        navigate(`/${location.state.id}`)
+      }else{
+        navigate("/profile")
+      }
+      // 
     }catch(err){
       setIsLoginError(true)
       setErrorMessage("user name or password wrong")

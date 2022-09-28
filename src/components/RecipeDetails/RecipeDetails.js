@@ -4,10 +4,15 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-const token = sessionStorage.getItem("token");
-const { REACT_APP_API_SERVER_URL } = process.env;
 
 function RecipeDetails({ recipe }) {
+  const { REACT_APP_API_SERVER_URL } = process.env;
+  const token = sessionStorage.getItem("token");
+  const header = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const [user, setUser] = useContext(UserContext);
   const [isFav, setIsFav] = useState(false);
   const navigate = useNavigate();
@@ -15,7 +20,6 @@ function RecipeDetails({ recipe }) {
   useEffect(() => {
     if (user) {
       let temp = user.favRecipes.some((e) => {
-        console.log("fav recipe", e);
         return e.recipeId === recipe.id;
       });
       setIsFav(temp);
@@ -23,20 +27,16 @@ function RecipeDetails({ recipe }) {
   }, []);
 
   async function addToUserFav() {
-    const token = sessionStorage.getItem("token");
     const payload = {
       userId: user.id,
       recipeId: recipe.id,
     };
     try {
+      console.log(header)
       const { data } = await axios.post(
         `${REACT_APP_API_SERVER_URL}/users/favrecipe`,
         payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        header
       );
       setIsFav(true);
       getProfile();
@@ -45,15 +45,24 @@ function RecipeDetails({ recipe }) {
     }
   }
 
+  async function removeFromUserFav() {
+    try {
+      const { data } = await axios.delete(
+        `${REACT_APP_API_SERVER_URL}/users/favrecipe/${recipe.id}`,
+        header
+      );
+      console.log(data);
+      setIsFav(false);
+      getProfile();
+    } catch (err) {
+      console.log(err);
+    }
+  }
   async function getProfile() {
     try {
       const { data } = await axios.get(
         `${REACT_APP_API_SERVER_URL}/users/profile`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        header
       );
       setUser(data);
     } catch (err) {
@@ -111,9 +120,7 @@ function RecipeDetails({ recipe }) {
         {user && (
           <Col>
             {user && isFav ? (
-              <Button onClick={addToUserFav} disabled>
-                Remove fav
-              </Button>
+              <Button onClick={removeFromUserFav}>Remove fav</Button>
             ) : (
               <Button onClick={addToUserFav}>Add to fav</Button>
             )}
@@ -123,7 +130,17 @@ function RecipeDetails({ recipe }) {
       {!user && (
         <Row>
           <Col>
-            <Button onClick={() => navigate("/login")}>Login to fav</Button>
+            <Button
+              onClick={() =>
+                navigate("/login", {
+                  state: {
+                    id: recipe.id,
+                  },
+                })
+              }
+            >
+              Login to fav
+            </Button>
           </Col>
         </Row>
       )}

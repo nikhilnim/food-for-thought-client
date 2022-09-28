@@ -19,6 +19,7 @@ function SignUpForm() {
     try{
       const {data} = await axios.post(`${REACT_APP_API_SERVER_URL}/users/signup`,formData)
       console.log(data)
+      navigate("/login")
     }catch(err){
       console.log(err)
       setIsSignUpError(true)

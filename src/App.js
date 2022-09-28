@@ -11,7 +11,6 @@ import {UserContext}   from "./context/UserContext";
 
 function App() {
   const userState = useState(null);
-
   return (
     <BrowserRouter>
       <UserContext.Provider value={userState}>
