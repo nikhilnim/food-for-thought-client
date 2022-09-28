@@ -24,7 +24,7 @@ function RecipeDetails({ recipe }) {
       });
       setIsFav(temp);
     }
-  }, []);
+  }, [recipe.id,user]);
 
   async function addToUserFav() {
     const payload = {
@@ -32,8 +32,7 @@ function RecipeDetails({ recipe }) {
       recipeId: recipe.id,
     };
     try {
-      console.log(header)
-      const { data } = await axios.post(
+      await axios.post(
         `${REACT_APP_API_SERVER_URL}/users/favrecipe`,
         payload,
         header

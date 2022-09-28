@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SiteHeader from "./components/SiteHeader/SiteHeader";
 import RecipePage from "./pages/RecipePage/RecipePage";
 import HomePage from "./pages/HomePage/HomePage";
-import { useState, createContext,useEffect } from "react";
+import { useState,useEffect } from "react";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Profile from "./pages/ProfilePage/ProfilePage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
@@ -11,7 +11,8 @@ import {UserContext}   from "./context/UserContext";
 import axios from "axios";
 
 function App() {
-  const userState = useState(null);
+  // const userState = useState(null);
+  const [user, setUser]= useState(null);
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     const { REACT_APP_API_SERVER_URL } = process.env;
@@ -19,6 +20,7 @@ function App() {
       getProfile();
     }
     async function getProfile() {
+      console.log("run")
       try {
         const { data } = await axios.get(
           `${REACT_APP_API_SERVER_URL}/users/profile`,
@@ -28,7 +30,7 @@ function App() {
             },
           }
         );
-        userState[1](data);
+        setUser(data);
       } catch (err) {
         console.log(err); 
       }
@@ -37,7 +39,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <UserContext.Provider value={userState}>
+      <UserContext.Provider value={ [user, setUser]}>
         <SiteHeader />
         <Routes>
           <Route path="/" element={<HomePage />}></Route>

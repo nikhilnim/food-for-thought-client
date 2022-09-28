@@ -7,7 +7,7 @@ import { UserContext } from "../../context/UserContext";
 const {REACT_APP_API_SERVER_URL} = process.env;
 
 function LoginForm() {
-  const [user,setUser] = useContext(UserContext);
+  const [,setUser] = useContext(UserContext);
   console.log("setuser",setUser)
   const [isLoginError,setIsLoginError] = useState(false)
   const [errorMessage,setErrorMessage] = useState("")

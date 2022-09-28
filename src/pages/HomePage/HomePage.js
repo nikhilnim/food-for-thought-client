@@ -1,12 +1,12 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import useGetRecipeListByPath from "../../hooks/useGetRecipeListByPath";
 import Spinner from "react-bootstrap/Spinner";
 import MasonryGrid from "../../components/MasonryGrid/MasonryGrid";
-import { UserContext } from "../../context/UserContext";
+
 
 function HomePage() {
   const { REACT_APP_API_SERVER_URL } = process.env;

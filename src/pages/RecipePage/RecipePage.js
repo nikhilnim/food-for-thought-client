@@ -1,4 +1,4 @@
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import RecipeDetails from "../../components/RecipeDetails/RecipeDetails";
 import useGetRecipe from "../../hooks/useGetRecipe";
