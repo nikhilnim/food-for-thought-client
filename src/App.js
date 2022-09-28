@@ -3,14 +3,38 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SiteHeader from "./components/SiteHeader/SiteHeader";
 import RecipePage from "./pages/RecipePage/RecipePage";
 import HomePage from "./pages/HomePage/HomePage";
-import { useState, createContext } from "react";
+import { useState, createContext,useEffect } from "react";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Profile from "./pages/ProfilePage/ProfilePage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import {UserContext}   from "./context/UserContext";
+import axios from "axios";
 
 function App() {
   const userState = useState(null);
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    const { REACT_APP_API_SERVER_URL } = process.env;
+    if(token){
+      getProfile();
+    }
+    async function getProfile() {
+      try {
+        const { data } = await axios.get(
+          `${REACT_APP_API_SERVER_URL}/users/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        userState[1](data);
+      } catch (err) {
+        console.log(err); 
+      }
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <UserContext.Provider value={userState}>
