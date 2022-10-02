@@ -17,7 +17,6 @@ function Profile() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    console.log("token", token);
     async function getProfile() {
       try {
         const { data } = await axios.get(
@@ -49,7 +48,6 @@ function Profile() {
       async function getFavRecipes() {
         try {
           const data = await Promise.allSettled(promises);
-          console.log(data)
           const recipeList = data.filter((e) => {
               if(e.status==='fulfilled'){
                 return true;
@@ -57,7 +55,6 @@ function Profile() {
           }).map((e) => {
             return e.value.data;
           });
-          console.log(recipeList)
           setUserRecipeList(recipeList);
         } catch (err) {
           console.error(err);

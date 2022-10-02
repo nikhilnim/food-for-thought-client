@@ -11,7 +11,6 @@ import {UserContext}   from "./context/UserContext";
 import axios from "axios";
 
 function App() {
-  // const userState = useState(null);
   const [user, setUser]= useState(null);
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -20,7 +19,6 @@ function App() {
       getProfile();
     }
     async function getProfile() {
-      console.log("run")
       try {
         const { data } = await axios.get(
           `${REACT_APP_API_SERVER_URL}/users/profile`,
