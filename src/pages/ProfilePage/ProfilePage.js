@@ -51,6 +51,8 @@ function Profile() {
           const recipeList = data.filter((e) => {
               if(e.status==='fulfilled'){
                 return true;
+              }else{
+                return false;
               }
           }).map((e) => {
             return e.value.data;
