@@ -7,10 +7,9 @@ import useGetRecipeListByPath from "../../hooks/useGetRecipeListByPath";
 import Spinner from "react-bootstrap/Spinner";
 import MasonryGrid from "../../components/MasonryGrid/MasonryGrid";
 
-
 function HomePage() {
   const { REACT_APP_API_SERVER_URL } = process.env;
-  const [recipeList, setPath] = useGetRecipeListByPath(
+  const [recipeList, setPath, isErr] = useGetRecipeListByPath(
     `${REACT_APP_API_SERVER_URL}/recipes`
   );
   const [protein, setProtein] = useState("");
@@ -22,7 +21,6 @@ function HomePage() {
       if (path.charAt(0) === "/") {
         path = path.slice(1);
       }
-      console.log(path);
       return path;
     }
     if (protein.length > 0 || calories.length > 0) {
@@ -63,7 +61,7 @@ function HomePage() {
     }
   }
 
-  if (!recipeList) {
+  if (!recipeList){
     return (
       <Container>
         <Row className="justify-content-center">
@@ -78,9 +76,6 @@ function HomePage() {
   } else {
     return (
       <Container>
-        <Row>
-          <Col></Col>
-        </Row>
         <Row className="justify-content-center my-5">
           <Col sm={3}>
             <Select
@@ -101,7 +96,7 @@ function HomePage() {
             />
           </Col>
         </Row>
-        <MasonryGrid recipeList={recipeList}></MasonryGrid>
+        {isErr ? <p>No content change the values to see recipes</p> : <MasonryGrid recipeList={recipeList}></MasonryGrid>}
       </Container>
     );
   }
