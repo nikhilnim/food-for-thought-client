@@ -111,7 +111,7 @@ function RecipeDetails({ recipe }) {
           <ul className="list-group list-group-flush">
             <li className="list-group-item">{`Prep time: ${recipe.prepTime}`}</li>
             <li className="list-group-item">{`Cook time: ${recipe.cookTime}`}</li>
-            <li className="list-group-item">{`Servings: ${recipe.cookTime}`}</li>
+            <li className="list-group-item">{`Servings: ${recipe.serving}`}</li>
           </ul>
         </Col>
       </Row>
@@ -119,9 +119,9 @@ function RecipeDetails({ recipe }) {
         {user && (
           <Col>
             {user && isFav ? (
-              <Button onClick={removeFromUserFav}>Remove fav</Button>
+              <Button onClick={removeFromUserFav} variant="danger">Remove Favourite</Button>
             ) : (
-              <Button onClick={addToUserFav}>Add to fav</Button>
+              <Button onClick={addToUserFav} variant="success">Add to Favourite</Button>
             )}
           </Col>
         )}

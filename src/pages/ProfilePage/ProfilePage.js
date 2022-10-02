@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Accordion from "react-bootstrap/Accordion";
 import Figure from "react-bootstrap/Figure";
 import { Button } from "react-bootstrap";
-
+import Spinner from "react-bootstrap/Spinner";
 const { REACT_APP_API_SERVER_URL } = process.env;
 
 function Profile() {
@@ -17,7 +17,7 @@ function Profile() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    console.log("token",token)
+    console.log("token", token);
     async function getProfile() {
       try {
         const { data } = await axios.get(
@@ -48,13 +48,19 @@ function Profile() {
 
       async function getFavRecipes() {
         try {
-          const data = await Promise.all(promises);
-          const recipeList = data.map((e) => {
-            return e.data;
+          const data = await Promise.allSettled(promises);
+          console.log(data)
+          const recipeList = data.filter((e) => {
+              if(e.status==='fulfilled'){
+                return true;
+              }
+          }).map((e) => {
+            return e.value.data;
           });
+          console.log(recipeList)
           setUserRecipeList(recipeList);
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       }
       getFavRecipes();
@@ -64,13 +70,13 @@ function Profile() {
   return isLoading ? (
     <div className="container">
       <div className="row">
-        <h1>Loading...</h1>
+        <Spinner animation="border" />
       </div>
     </div>
   ) : (
-    <div className="container">
+    <div className="container mb-3">
       <div className="row mb-3">
-        <div className="col-sm-3">
+        <div className="col">
           <h1 className="fs-2">Welcome {user.name}!</h1>
         </div>
       </div>
@@ -80,28 +86,25 @@ function Profile() {
         </div>
       </div>
       <div className="row">
-        <div className="col-sm-6">
+        <div className="col-lg-8">
           {userRecipeList && (
             <Accordion defaultActiveKey={userRecipeList.length - 1}>
               {userRecipeList
                 .map((recipe, idx) => {
                   return (
                     <Accordion.Item eventKey={idx} key={idx}>
-                      <Accordion.Header>
-                        <Figure className="mb-0">
-                          <Figure.Image
-                            width={100}
-                            height={100}
-                            alt="171x180"
-                            src={`${REACT_APP_API_SERVER_URL}/images/${recipe.image}`}
-                          />
-                          <Figure.Caption className="fs-bold fs-6">
-                            {recipe.title}
-                          </Figure.Caption>
-                        </Figure>
-                      </Accordion.Header>
+                      <Accordion.Header>{recipe.title}</Accordion.Header>
                       <Accordion.Body style={{ whiteSpace: "pre-wrap" }}>
+                        <Figure.Image
+                          width={200}
+                          height={200}
+                          alt="171x180"
+                          src={`${REACT_APP_API_SERVER_URL}/images/${recipe.image}`}
+                        />
                         <p className="fs-5 fw-bold">Ingredients</p>
+                        <span className="text-danger">
+                          Servings {recipe.serving}
+                        </span>
                         <p>{recipe.ingredient}</p>
                         <div className="mb-3">
                           <span className="badge bg-primary rounded-pill me-2">
@@ -110,12 +113,20 @@ function Profile() {
                           <span className="badge bg-danger rounded-pill me-2">
                             Fat {recipe.nutrition.fat}
                           </span>
-                          <span className="badge bg-success rounded-pill">
+                          <span className="badge bg-success rounded-pill me-2">
                             Protein {recipe.nutrition.protein}
                           </span>
                         </div>
                         <div>
-                          <Button variant="info" as={Link} to={`/${recipe.id}`} size="sm" className="text-white">See full details</Button>
+                          <Button
+                            variant="info"
+                            as={Link}
+                            to={`/${recipe.id}`}
+                            size="sm"
+                            className="text-white"
+                          >
+                            See full details
+                          </Button>
                         </div>
                       </Accordion.Body>
                     </Accordion.Item>

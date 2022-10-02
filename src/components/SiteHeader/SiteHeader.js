@@ -31,7 +31,7 @@ function SiteHeader() {
               {user ? `My Recipes` : "Login"}
             </Nav.Link>
             {user && (
-              <Button variant="danger" size="sm" onClick={handleLogOut}className="align-self-center">
+              <Button variant="danger" size="sm" onClick={handleLogOut} className="align-self-lg-center align-self-start">
                 Logout
               </Button>
             )}

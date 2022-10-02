@@ -40,7 +40,7 @@ function SignUpForm() {
                 type="text"
                 className="form-control"
                 id="exampleFormControlInput"
-                placeholder="name@example.com"
+                placeholder="Jonh Doe"
                 {...register("name", { required: true })}
               />
               {errors.name && (
