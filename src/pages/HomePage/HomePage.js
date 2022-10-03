@@ -77,7 +77,7 @@ function HomePage() {
     return (
       <Container>
         <Row className="justify-content-center my-5">
-          <Col sm={3}>
+          <Col sm={3} className="mb-3 mb-sm-0">
             <Select
               options={proteinSelect}
               onChange={handleProteinSelect}

@@ -50,7 +50,6 @@ function RecipeDetails({ recipe }) {
         `${REACT_APP_API_SERVER_URL}/users/favrecipe/${recipe.id}`,
         header
       );
-      console.log(data);
       setIsFav(false);
       getProfile();
     } catch (err) {

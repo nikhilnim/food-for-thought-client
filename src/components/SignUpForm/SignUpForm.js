@@ -11,11 +11,9 @@ function SignUpForm() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  console.log(errors);
   const navigate = useNavigate();
 
   async function onSubmit(formData) {
-    console.log(formData);
     try{
       const {data} = await axios.post(`${REACT_APP_API_SERVER_URL}/users/signup`,formData)
       console.log(data)
@@ -23,7 +21,7 @@ function SignUpForm() {
     }catch(err){
       console.log(err)
       setIsSignUpError(true)
-      setErrorMessage("Email id is already registered")
+      setErrorMessage(err.response.data)
     }
   }
   return (
@@ -31,9 +29,9 @@ function SignUpForm() {
       <div className="row justify-content-center">
         <div className="col-sm-5">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <h3>Sign Up</h3>
+            <h1 className="fs-3">Sign Up</h1>
             <div className="mb-3">
-              <label for="exampleFormControlInput" className="form-label">
+              <label htmlFor="exampleFormControlInput" className="form-label">
                 Name
               </label>
               <input
@@ -50,7 +48,7 @@ function SignUpForm() {
               )}
             </div>
             <div className="mb-3">
-              <label for="exampleFormControlInput1" className="form-label">
+              <label htmlFor="exampleFormControlInput1" className="form-label">
                 Email address
               </label>
               <input
@@ -67,7 +65,7 @@ function SignUpForm() {
               )}
             </div>
             <div className="mb-3">
-              <label for="exampleFormControlInput2" className="form-label">
+              <label htmlFor="exampleFormControlInput2" className="form-label">
                 Password
               </label>
               <input
@@ -83,7 +81,7 @@ function SignUpForm() {
               )}
             </div>
             <div className="mb-3">
-              <button type="sumbit" class="btn btn-primary mt-3">
+              <button type="sumbit" className="btn btn-primary mt-3">
                 Sign Up
               </button>
             </div>

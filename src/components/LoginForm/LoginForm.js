@@ -8,7 +8,6 @@ const {REACT_APP_API_SERVER_URL} = process.env;
 
 function LoginForm() {
   const [,setUser] = useContext(UserContext);
-  console.log("setuser",setUser)
   const [isLoginError,setIsLoginError] = useState(false)
   const [errorMessage,setErrorMessage] = useState("")
   const {
@@ -29,7 +28,6 @@ function LoginForm() {
         },
       })
       setUser(profile)
-      console.log("profile",profile)
       setIsLoginError(false)
       setErrorMessage("")
       if(location.state){
@@ -49,8 +47,9 @@ function LoginForm() {
       <div className="row justify-content-center">
         <div className="col-sm-5">
           <form onSubmit={handleSubmit(onSubmit)}>
+            <h1 className="fs-3">Login</h1>
             <div className="mb-3">
-              <label for="exampleFormControlInput1" className="form-label">
+              <label htmlFor="exampleFormControlInput1" className="form-label">
                 Email address
               </label>
               <input
@@ -61,7 +60,7 @@ function LoginForm() {
                 {...register('email',{required:true})}
               />
               {errors.email &&<p className="text-danger fs-6 fw-lighter">Please enter email</p>}
-              <label for="exampleFormControlInput2" className="form-label mt-3">
+              <label htmlFor="exampleFormControlInput2" className="form-label mt-3">
                 Password
               </label>
               <input
@@ -71,8 +70,8 @@ function LoginForm() {
                 {...register('password',{required:true})}
               />
               {errors.password &&<p className="text-danger fs-6 fw-lighter">Please enter password</p>}
-              <button type="sumbit" class="btn mt-3 me-3 btn-outline-primary" >Login</button>
-              <button type="button" onClick={()=>navigate("/signup")} class="btn btn-outline-success mt-3 " >Sign Up</button>
+              <button type="sumbit" className="btn mt-3 me-3 btn-outline-primary" >Login</button>
+              <button type="button" onClick={()=>navigate("/signup")} className="btn btn-outline-success mt-3 " >Sign Up</button>
             </div>
             {isLoginError && <p className="text-danger fs-6 fw-lighter">{`${errorMessage}`}</p>}
           </form>
