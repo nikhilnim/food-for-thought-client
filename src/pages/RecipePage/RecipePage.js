@@ -1,4 +1,4 @@
-import { Col, Container, Row, } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import RecipeDetails from "../../components/RecipeDetails/RecipeDetails";
 import useGetRecipe from "../../hooks/useGetRecipe";
@@ -6,19 +6,20 @@ import useGetRecipe from "../../hooks/useGetRecipe";
 function RecipePage() {
   const params = useParams();
   const recipe = useGetRecipe(params.id);
-  
+ 
   if (!recipe) {
-    return(
+    return (
       <Container>
         <Row className="justify-content-md-center">
           <Col sm="3">
             <small>no content found</small>
           </Col>
         </Row>
-      </Container>)
+      </Container>
+    );
   } else {
     return (
-      <RecipeDetails recipe={recipe}></RecipeDetails>
+        <RecipeDetails recipe={recipe}></RecipeDetails>
     );
   }
 }

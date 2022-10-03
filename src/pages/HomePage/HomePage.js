@@ -4,17 +4,16 @@ import Col from "react-bootstrap/Col";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import useGetRecipeListByPath from "../../hooks/useGetRecipeListByPath";
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from "react-bootstrap/Spinner";
 import MasonryGrid from "../../components/MasonryGrid/MasonryGrid";
-
-
 
 function HomePage() {
   const { REACT_APP_API_SERVER_URL } = process.env;
-  const [recipeList, setPath] = useGetRecipeListByPath(`${REACT_APP_API_SERVER_URL}/recipes`);
+  const [recipeList, setPath, isErr] = useGetRecipeListByPath(
+    `${REACT_APP_API_SERVER_URL}/recipes`
+  );
   const [protein, setProtein] = useState("");
   const [calories, setCalories] = useState("");
-  
 
   useEffect(() => {
     function pathBuilder() {
@@ -22,7 +21,6 @@ function HomePage() {
       if (path.charAt(0) === "/") {
         path = path.slice(1);
       }
-      console.log(path);
       return path;
     }
     if (protein.length > 0 || calories.length > 0) {
@@ -31,9 +29,7 @@ function HomePage() {
     } else {
       setPath(`${REACT_APP_API_SERVER_URL}/recipes`);
     }
-  }, [protein, calories,REACT_APP_API_SERVER_URL,setPath]);
-
- 
+  }, [protein, calories, REACT_APP_API_SERVER_URL, setPath]);
 
   const proteinSelect = [
     { value: "10", label: "Protein over 10gm" },
@@ -41,6 +37,7 @@ function HomePage() {
     { value: "30", label: "Protein over 30gm" },
   ];
   const caloriesSelect = [
+    { value: "150", label: "Calories under 150" },
     { value: "200", label: "Calories under 200" },
     { value: "300", label: "Calories under 300" },
     { value: "400", label: "Calories under 400" },
@@ -63,23 +60,24 @@ function HomePage() {
       setCalories(path);
     }
   }
- 
-  if (!recipeList) {
+
+  if (!recipeList){
     return (
-      <Spinner animation="border" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </Spinner>
+      <Container>
+        <Row className="justify-content-center">
+          <Col md="auto">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </Col>
+        </Row>
+      </Container>
     );
   } else {
     return (
       <Container>
-        <Row>
-          <Col>
-            
-          </Col>
-        </Row>
-        <Row className="justify-content-center mb-5">
-          <Col sm={3}>
+        <Row className="justify-content-center my-5">
+          <Col sm={3} className="mb-3 mb-sm-0">
             <Select
               options={proteinSelect}
               onChange={handleProteinSelect}
@@ -90,16 +88,15 @@ function HomePage() {
           </Col>
           <Col sm={3}>
             <Select
-                options={caloriesSelect}
-                onChange={handleCaloriesSelect}
-                defaultValue=""
-                isClearable="true"
-                placeholder="Calories"
-              />
+              options={caloriesSelect}
+              onChange={handleCaloriesSelect}
+              defaultValue=""
+              isClearable="true"
+              placeholder="Calories"
+            />
           </Col>
         </Row>
-        <MasonryGrid recipeList={recipeList}></MasonryGrid>
-       
+        {isErr ? <p>No content change the values to see recipes</p> : <MasonryGrid recipeList={recipeList}></MasonryGrid>}
       </Container>
     );
   }

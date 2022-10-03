@@ -1,3 +1,47 @@
+# Food For Thought Client
+
+A recipe sorting and bookmarking project.
+
+## Appendix
+
+This project works in conjunction with backend server and Admin/Dashboard
+
+Server github: https://github.com/nikhilnim/food-for-thought-server
+
+Admin github: https://github.com/nikhilnim/food-for-thought-admin 
+
+Before running this project please start the server. Instructions on server are present on server github. Additionally you can manage recipes from Admin panel please check Admin github
+
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/nikhilnim/food-for-thought-client
+```
+
+Go to the project directory
+
+```bash
+  cd food-for-thought-client
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start
+```
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
