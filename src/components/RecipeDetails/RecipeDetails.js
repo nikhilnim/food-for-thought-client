@@ -46,7 +46,7 @@ function RecipeDetails({ recipe }) {
 
   async function removeFromUserFav() {
     try {
-      const { data } = await axios.delete(
+      await axios.delete(
         `${REACT_APP_API_SERVER_URL}/users/favrecipe/${recipe.id}`,
         header
       );
